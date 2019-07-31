@@ -1,0 +1,54 @@
+#!/usr/bin/env node
+
+//开头的 #!/usr/bin/env node 这个语句必须加上，而且就放在第一行，固定的
+//主要是为了让系统看到这一行的时候，会沿着该路径去查找 node 并执行，
+//主要是为了兼容 Mac ，确保可执行。bin 目录初始化
+const program = require('commander');
+const xrAdd = require('../command/xr-add');
+const xrDelete = require('../command/xr-delete');
+const xrList = require('../command/xr-list');
+const xrInit = require('../command/xr-init');
+
+// 基本的指令前缀是是xr(该文件的文件名)即在终端输入的都是 xr 打头，后面追加参数。
+// 根据 xr 后面不同的参数来运行不同的命令。
+// 定义四个指令
+program
+    .version(require('../package').version) // 定义当前版本
+    .usage('<command> [options]') // 定义使用方法
+
+program.command('add')                  //命令
+    .description('Add a new template')  //命令描述
+    .alias('a')                         //命令别名
+    .action(() => {
+        xrAdd();                        //触发该命令时，运行的函数
+    })
+program
+    .command('delete')
+    .description('Delete a template')
+    .alias('del')
+    .action(() => {
+        xrDelete();
+    })
+program
+    .command('list')
+    .description('List all the templates')
+    .alias('ls')
+    .action(() => {
+        xrList();
+    })
+program
+    .command('init')
+    .description('Generate a new project')
+    .alias('i')
+    .action(() => {
+        xrInit();
+    })
+
+// 解析命令行参数
+program.parse(process.argv)
+
+// 提供帮助信息
+//输入xr的时候会出现基本的 -V -h的友好提示
+if (!program.args.length) {
+    program.help()
+}
