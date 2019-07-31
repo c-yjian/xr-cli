@@ -22,6 +22,7 @@ node ./bin/xr
 sudo npm link
 
 ```
+绑定之后直接在终端运行 xr 即可
 全局解绑
 ```
 sudo npm unlink
